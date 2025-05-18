@@ -9,9 +9,18 @@ public class ScriptableElement : ScriptableObject
     [Space] public Material ColorMat;
     [Space] public List<ScriptableElement> Ingredients;
 
-    public bool IsBasic()
+    public bool IsBasic() => Ingredients == null || Ingredients.Count == 0;
+
+    public int MixHash()
     {
-        return Ingredients == null || Ingredients.Count == 0;
+        int hash = 0;
+
+        foreach (var element in Ingredients)
+        {
+            hash += element.GetHashCode();
+        }
+
+        return hash;
     }
     
 }

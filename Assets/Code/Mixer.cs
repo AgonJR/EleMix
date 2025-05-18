@@ -10,7 +10,8 @@ public class Mixer : MonoBehaviour
     public static Mixer Instance;
 
     [SerializeField] private GameObject _mixVFX;
-    [SerializeField] private List<ScriptableElement> _allElementDala;
+    [SerializeField] private List<ScriptableElement> _allElementData;
+    
 
     // - - -
     // Internals
@@ -20,12 +21,8 @@ public class Mixer : MonoBehaviour
     private Card _card2;
     private List<Card> _overQueued;
 
-    private Dictionary<string, string> _undiscoveredDatabase;
-    private Dictionary<string, Tuple<string, string>> _mixDatabase;
-
     void Start()
     {
-        PopulateData();
         Instance = this;
         _overQueued = new List<Card>();
     }
@@ -34,7 +31,7 @@ public class Mixer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            MixCards();
+            MixQueuedCards();
         }
     }
 
@@ -44,7 +41,7 @@ public class Mixer : MonoBehaviour
 
     public Card MixCards(Card c1, Card c2)
     {
-        string mixResult = Mix(c1, c2);
+        ScriptableElement mixResult = Mix(c1, c2);
 
         if (mixResult == null) return null;
         
@@ -54,7 +51,7 @@ public class Mixer : MonoBehaviour
 
         Card newCard = GameBoard.Instance.SpawnCard(c2.IdleX, c2.IdleY);
 
-        newCard.SetElement(ConvertElementStringToData(mixResult));
+        newCard.SetElement(mixResult);
         GameBoard.Instance.PlaceCard(newCard, mX, mY);
 
         PlayVFX(mX, mY);
@@ -62,7 +59,7 @@ public class Mixer : MonoBehaviour
         return null;
     }
 
-    private Card MixCards()
+    private Card MixQueuedCards()
     {
         if (_card1 != null && _card2 != null)
         {
@@ -76,23 +73,21 @@ public class Mixer : MonoBehaviour
         return null;
     }
 
-    private string Mix(Card c1, Card c2)
-    { 
-        string mixResult = null;
+    private ScriptableElement Mix(Card c1, Card c2)
+    {
+        int mixHash = c1.EleHash + c2.EleHash;
 
-        string mixString1 = c1.GetElement() + c2.GetElement();
-        string mixString2 = c2.GetElement() + c1.GetElement();
-
-        if (mixResult == null)
+        for (int i = 0; i < _allElementData.Count; i++)
         {
-            _undiscoveredDatabase.TryGetValue(mixString1, out mixResult);
-        }
-        if (mixResult == null)
-        {
-            _undiscoveredDatabase.TryGetValue(mixString2, out mixResult);
+            if (_allElementData[i].MixHash() == mixHash)
+            {
+                var mixResult = _allElementData[i];
+                _allElementData.RemoveAt(i);
+                return mixResult;
+            }
         }
 
-        return mixResult;
+        return null;
     }
 
     private void PlayVFX(int x, int y)
@@ -153,49 +148,11 @@ public class Mixer : MonoBehaviour
     // DATA 
     // ---
 
-    private void PopulateData()
-    {
-        _mixDatabase = new Dictionary<string, Tuple<string, string>>();
-        _undiscoveredDatabase = new Dictionary<string, string>();
-
-        // Tier 0
-        _mixDatabase.Add("Water",   null);
-        _mixDatabase.Add("Earth",   null);
-        _mixDatabase.Add("Fire",    null);
-        _mixDatabase.Add("Air",     null);
-
-        // Tier 1
-        _mixDatabase.Add("Mud",     new Tuple<string, string>("Water",  "Earth" ));
-        _mixDatabase.Add("Steam",   new Tuple<string, string>("Water",  "Fire"  ));
-        _mixDatabase.Add("Cloud",   new Tuple<string, string>("Water",  "Air"   ));
-        _mixDatabase.Add("Lava",    new Tuple<string, string>("Earth",  "Fire"  ));
-        _mixDatabase.Add("Soil",    new Tuple<string, string>("Earth",  "Air"   ));
-        _mixDatabase.Add("Heat",    new Tuple<string, string>("Fire",   "Air"   ));
-
-        // Tier 2
-        // _mixDatabase.Add("Bog",     new Tuple<string, string>("Mud",    "Water" ));
-        // _mixDatabase.Add("Swamp",   new Tuple<string, string>("Mud",    "Earth" ));
-        // _mixDatabase.Add("Clay",    new Tuple<string, string>("Mud",    "Fire"  ));
-        // _mixDatabase.Add("Soil",    new Tuple<string, string>("Mud",    "Air"   ));
-
-        // How to deal with duplicates ? two combos adding up to the same result ?
-
-
-        // Fill Refererence Database
-        foreach ( var mixCombo in _mixDatabase )
-        {
-            if ( mixCombo.Value != null )
-            {
-                _undiscoveredDatabase.Add(mixCombo.Value.Item1 + mixCombo.Value.Item2, mixCombo.Key);
-            } 
-        }
-    }
-
     public List<ScriptableElement> GetAllBasics()
     {
         List<ScriptableElement> basics = new List<ScriptableElement>();
 
-        foreach ( ScriptableElement element in _allElementDala )
+        foreach ( ScriptableElement element in _allElementData )
         {
             if ( element.IsBasic() )
             {
@@ -204,19 +161,6 @@ public class Mixer : MonoBehaviour
         }
 
         return basics;
-    }
-
-    public ScriptableElement ConvertElementStringToData(string elementName)
-    {
-        foreach ( ScriptableElement element in _allElementDala )
-        {
-            if ( elementName.Equals(element.Name) )
-            {
-                return element;
-            }
-        }
-
-        return null;
     }
 
     // ---

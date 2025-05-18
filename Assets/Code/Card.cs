@@ -175,6 +175,10 @@ public class Card : MonoBehaviour
         RefreshName();
     }
 
+
+    public int MixHash => _elementData.MixHash();
+    public int EleHash => _elementData.GetHashCode();
+    
     public float IdleX => _idlePosition.x;
     public float IdleY => _idlePosition.y;
 
