@@ -25,6 +25,8 @@ public class Mixer : MonoBehaviour
     {
         Instance = this;
         _overQueued = new List<Card>();
+
+        SpawnBasics();
     }
 
     void Update()
@@ -32,6 +34,27 @@ public class Mixer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             MixQueuedCards();
+        }
+    }
+
+    private void SpawnBasics()
+    {
+        float x = -3;
+        int dCount = _allElementData.Count;
+        for (int i = 0; i < dCount; i++)
+        {
+            if (_allElementData[i].IsBasic())
+            {
+                Card newCard = GameBoard.Instance.SpawnCard(0, 7);
+                newCard.SetElement(_allElementData[i]);
+                
+                GameBoard.Instance.PlaceCard(newCard, x, 0f);
+                _allElementData.RemoveAt(i);
+
+                dCount--;
+                x += 2f;
+                i--;
+            }
         }
     }
 
@@ -44,7 +67,7 @@ public class Mixer : MonoBehaviour
         ScriptableElement mixResult = Mix(c1, c2);
 
         if (mixResult == null) return null;
-        
+
         // Spawn at Midpoint
         int mX = (int)((c1.IdleX + c2.IdleX) / 2);
         int mY = (int)((c1.IdleY + c2.IdleY) / 2);
@@ -142,26 +165,4 @@ public class Mixer : MonoBehaviour
 
         _overQueued.Clear();
     }
-
-
-    // ---
-    // DATA 
-    // ---
-
-    public List<ScriptableElement> GetAllBasics()
-    {
-        List<ScriptableElement> basics = new List<ScriptableElement>();
-
-        foreach ( ScriptableElement element in _allElementData )
-        {
-            if ( element.IsBasic() )
-            {
-                basics.Add(element);
-            }
-        }
-
-        return basics;
-    }
-
-    // ---
 }

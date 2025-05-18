@@ -92,58 +92,6 @@ public class GameBoard : MonoBehaviour
     void Update()
     {
         ProcessMousePosition();
-        ProcessDebugging();
-    }
-
-    private void ProcessDebugging()
-    {
-        int c = Random.Range(1,5);
-
-        if ( Input.GetKey(KeyCode.Alpha1 ) ) { c = 1; }
-        if ( Input.GetKey(KeyCode.Alpha2 ) ) { c = 2; }
-        if ( Input.GetKey(KeyCode.Alpha3 ) ) { c = 3; }
-        if ( Input.GetKey(KeyCode.Alpha4 ) ) { c = 4; }
-        if ( Input.GetKey(KeyCode.Alpha5 ) ) { c = 5; }
-        if ( Input.GetKey(KeyCode.Alpha6 ) ) { c = 6; }
-
-        if ( Input.GetKeyDown(KeyCode.E) )
-        {
-            List<ScriptableElement> basicElements = Mixer.Instance.GetAllBasics();
-
-            Material m = c == 0 ? _cardColors[Random.Range(0, _cardColors.Count)] : _cardColors[c-1];
-
-            Card newCard = SpawnCard(Random.Range(-3, 4), 7);
-
-            newCard.SetFace(m);
-            newCard.SetElement(basicElements[c-1]);
-
-            PlaceCard( newCard, Random.Range(-5, 5), Random.Range(-5, 6) );
-        }
-
-        if ( Input.GetKeyDown(KeyCode.F) )
-        {
-            bool line = Input.GetKey(KeyCode.LeftShift);
-            Card newCard = null;
-
-            for ( int x = (_maxX-2) * -1; x <= (_maxX-2); x++ )
-            {
-                for ( int y = (_maxY-2) * -1; y <= (_maxY-2); y++ )
-                {
-                    ConvertXYToIndices(x, y, out int i, out int j);
-                    if ( !_grid[i, j] ) 
-                    {
-                        newCard = SpawnCard(Random.Range(-3, 4), 7);
-
-                        newCard.SetFace(_cardColors[5]);
-                        newCard.SetElement(" - X - ");
-
-                        PlaceCard( newCard, x, y );
-                    }
-                    if ( newCard != null && !line ) break;
-                }
-                if ( newCard != null ) break;
-            }
-        }
     }
 
     private void ProcessMousePosition()
