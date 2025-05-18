@@ -562,6 +562,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixVFX: {fileID: 5619286631487027154, guid: 74ff6a4b953a74666a2500c8189be645, type: 3}
+  _allElementDala:
+  - {fileID: 11400000, guid: 494a25ab7e5d043b48ed6ee2d8e1522e, type: 2}
+  - {fileID: 11400000, guid: 894d5af0a858248a6a3f2703b415592b, type: 2}
+  - {fileID: 11400000, guid: 0668222b975cb4e10b013026fa9985b7, type: 2}
+  - {fileID: 11400000, guid: 4abcd25d19ecf4725b71282cc28db079, type: 2}
+  - {fileID: 11400000, guid: 6bed8c8adee6142209891c6a536f8101, type: 2}
+  - {fileID: 11400000, guid: a0d9e6123f64c41f298d3102ff103132, type: 2}
+  - {fileID: 11400000, guid: beb5211027b6b42b5a93676c843b064f, type: 2}
+  - {fileID: 11400000, guid: 4288407febaf44d8e8be8629581601ab, type: 2}
+  - {fileID: 11400000, guid: eb1c3a3657dc14aeabbb2c73cd2610ab, type: 2}
+  - {fileID: 11400000, guid: 05ce7888a6f3d403fb0ac2ba006b140a, type: 2}
 --- !u!1 &1946983551
 GameObject:
   m_ObjectHideFlags: 0

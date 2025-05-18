@@ -10,6 +10,7 @@ public class Mixer : MonoBehaviour
     public static Mixer Instance;
 
     [SerializeField] private GameObject _mixVFX;
+    [SerializeField] private List<ScriptableElement> _allElementDala;
 
     // - - -
     // Internals
@@ -69,7 +70,7 @@ public class Mixer : MonoBehaviour
             int mX = (int) ((_card1.IdleX + _card2.IdleX) / 2);
             int mY = (int) ((_card1.IdleY + _card2.IdleY) / 2);
             Card newCard = GameBoard.Instance.SpawnCard(mX, mY);
-            newCard.SetElement(mixResult);
+            newCard.SetElement(ConvertElementStringToData(mixResult));
             PlayVFX(mX, mY);
             ClearQueue();
             return true;
@@ -174,16 +175,32 @@ public class Mixer : MonoBehaviour
         }
     }
 
-    public List<string> GetAllBasics()
+    public List<ScriptableElement> GetAllBasics()
     {
-        List<string> basics = new List<string>();
+        List<ScriptableElement> basics = new List<ScriptableElement>();
 
-        foreach ( var mixCombo in _mixDatabase )
+        foreach ( ScriptableElement element in _allElementDala )
         {
-            if ( mixCombo.Value == null ) basics.Add(mixCombo.Key);
+            if ( element.IsBasic() )
+            {
+                basics.Add(element);
+            }
         }
 
         return basics;
+    }
+
+    public ScriptableElement ConvertElementStringToData(string elementName)
+    {
+        foreach ( ScriptableElement element in _allElementDala )
+        {
+            if ( elementName.Equals(element.Name) )
+            {
+                return element;
+            }
+        }
+
+        return null;
     }
 
     // ---

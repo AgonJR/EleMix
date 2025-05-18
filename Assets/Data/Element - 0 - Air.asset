@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117f5670b7e3c4dd0a25226af7c2bb4f, type: 3}
+  m_Name: Element - 0 - Air
+  m_EditorClassIdentifier: 
+  id: 0
+  Name: Air
+  ColorMat: {fileID: 2100000, guid: e45a93572be0e45a3b2b71f93d8ddbf6, type: 2}
+  Ingredients: []

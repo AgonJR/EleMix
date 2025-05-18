@@ -106,7 +106,7 @@ public class GameBoard : MonoBehaviour
 
         if ( Input.GetKeyDown(KeyCode.E) )
         {
-            List<string> basicElements = Mixer.Instance.GetAllBasics();
+            List<ScriptableElement> basicElements = Mixer.Instance.GetAllBasics();
 
             Material m = c == 0 ? _cardColors[Random.Range(0, _cardColors.Count)] : _cardColors[c-1];
 

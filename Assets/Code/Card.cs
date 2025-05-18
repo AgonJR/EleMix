@@ -3,6 +3,7 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [Header("Element")]
+    [SerializeField] private ScriptableElement _elementData;
     [SerializeField] private string _elementName = "X";
     [SerializeField] private TextMesh _elementTxt;
 
@@ -44,7 +45,7 @@ public class Card : MonoBehaviour
 
     void Awake()
     {
-        _idlePosition = transform.localPosition;
+        _idlePosition = transform.localPosition; // test
     }
 
     void FixedUpdate()
@@ -163,6 +164,15 @@ public class Card : MonoBehaviour
     public void SetIdlePosition(Vector3 idlePos)
     {
         _idlePosition = idlePos;
+    }
+
+    public void SetElement(ScriptableElement elData) {AssignElementData(elData);}
+    public void AssignElementData(ScriptableElement elData)
+    {
+        _elementData = elData;
+        _elementName = elData.Name;
+        _rendererFace.material = elData.ColorMat;
+        RefreshName();
     }
 
     public float IdleX => _idlePosition.x;
