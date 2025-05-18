@@ -15,7 +15,7 @@ public class Mixer : MonoBehaviour
     // - - -
     // Internals
     // - - -
-    
+
     private Card _card1;
     private Card _card2;
     private List<Card> _overQueued;
@@ -32,7 +32,7 @@ public class Mixer : MonoBehaviour
 
     void Update()
     {
-        if ( Input.GetKeyDown(KeyCode.Space) )
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             MixCards();
         }
@@ -42,41 +42,57 @@ public class Mixer : MonoBehaviour
     // Mixing
     // ---
 
-    private bool MixCards()
+    public Card MixCards(Card c1, Card c2)
     {
-        if ( _card1 != null && _card2 != null )
+        string mixResult = Mix(c1, c2);
+
+        if (mixResult == null) return null;
+        
+        // Spawn at Midpoint
+        int mX = (int)((c1.IdleX + c2.IdleX) / 2);
+        int mY = (int)((c1.IdleY + c2.IdleY) / 2);
+
+        Card newCard = GameBoard.Instance.SpawnCard(c2.IdleX, c2.IdleY);
+
+        newCard.SetElement(ConvertElementStringToData(mixResult));
+        GameBoard.Instance.PlaceCard(newCard, mX, mY);
+
+        PlayVFX(mX, mY);
+
+        return null;
+    }
+
+    private Card MixCards()
+    {
+        if (_card1 != null && _card2 != null)
         {
-            string mixResult = null;
+            Card newCard = MixCards(_card1, _card2);
 
-            string mixString1 = _card1.GetElement() + _card2.GetElement();
-            string mixString2 = _card2.GetElement() + _card1.GetElement();
-
-            if ( mixResult == null )  
-            { 
-                _undiscoveredDatabase.TryGetValue(mixString1, out mixResult); 
-            }
-            if ( mixResult == null )  
-            { 
-                _undiscoveredDatabase.TryGetValue(mixString2, out mixResult); 
-            }
-            if ( mixResult == null )  { ClearQueue(); return false; }
-            else 
-            {
-                // Remove from _undiscoveredDatabase
-                // TO DO
-            }
-
-            // Spawn at Midpoint
-            int mX = (int) ((_card1.IdleX + _card2.IdleX) / 2);
-            int mY = (int) ((_card1.IdleY + _card2.IdleY) / 2);
-            Card newCard = GameBoard.Instance.SpawnCard(mX, mY);
-            newCard.SetElement(ConvertElementStringToData(mixResult));
-            PlayVFX(mX, mY);
             ClearQueue();
-            return true;
+
+            return newCard;
         }
 
-        return false;
+        return null;
+    }
+
+    private string Mix(Card c1, Card c2)
+    { 
+        string mixResult = null;
+
+        string mixString1 = c1.GetElement() + c2.GetElement();
+        string mixString2 = c2.GetElement() + c1.GetElement();
+
+        if (mixResult == null)
+        {
+            _undiscoveredDatabase.TryGetValue(mixString1, out mixResult);
+        }
+        if (mixResult == null)
+        {
+            _undiscoveredDatabase.TryGetValue(mixString2, out mixResult);
+        }
+
+        return mixResult;
     }
 
     private void PlayVFX(int x, int y)

@@ -32,6 +32,7 @@ public class GameBoard : MonoBehaviour
     private int _maxY =  6;
 
     private bool[,] _grid; // negatives stored at max + n*-1
+    private Card[,] _crid; 
     private GameObject[,] _markers;
 
     // - - -
@@ -56,6 +57,7 @@ public class GameBoard : MonoBehaviour
         int gY = (int)(_maxY * 2) + 1;
 
         _grid = new bool[gX, gY];
+        _crid = new Card[gX, gY];
         _markers = new GameObject[gX, gY];
     }
 
@@ -174,13 +176,14 @@ public class GameBoard : MonoBehaviour
     public void PlaceCard(Card card) { PlaceCard(card, _mouseX, _mouseY); }
     public void PlaceCard(Card card, float x, float y)
     {
-        if ( ToggleOnGrid(true, x, y, out x, out y) )
+        if ( ToggleOnGrid(card, true, x, y, out x, out y, out Card overlapped) )
         {
             card.SetIdlePosition(new Vector3(x, y, 0));
         }
         else
         {
-            ToggleOnGrid(true, card.IdleX, card.IdleY, out _, out _);
+            Mixer.Instance.MixCards(card, overlapped);
+            ToggleOnGrid(card, true, card.IdleX, card.IdleY, out _, out _, out _);
         }
 
         card.RefreshName();
@@ -188,18 +191,23 @@ public class GameBoard : MonoBehaviour
 
     public void PickUpCard(float x, float y)
     {
-        ToggleOnGrid(false, x, y, out x, out y);
+        ToggleOnGrid(null, false, x, y, out x, out y, out Card pickedUp);
     }
 
-    private bool ToggleOnGrid(bool toggle, float x, float y, out float rx, out float ry)
+    private bool ToggleOnGrid(Card card, bool toggle, float x, float y, out float rx, out float ry, out Card overlap)
     {
         x = Mathf.Round(x); rx = x;
         y = Mathf.Round(y); ry = y;
 
         CovertXYToIndices(x, y, out int i, out int j);
 
-        if (_grid[i, j] && toggle ) { return false; }
-            _grid[i, j]  = toggle;    return true ;
+        overlap = _crid[i, j];
+
+        if (_grid[i, j] && toggle) { return false; }
+
+        _crid[i, j] = toggle ? card : null;
+        _grid[i, j] = toggle ; return true;
+        
     }
 
     private void CovertXYToIndices(float x, float y, out int i, out int j)
