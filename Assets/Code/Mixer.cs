@@ -10,6 +10,8 @@ public class Mixer : MonoBehaviour
     public static Mixer Instance;
 
     [SerializeField] private GameObject _mixVFX;
+    [SerializeField] private AudioSource _mixSFX;
+    [Space]
     [SerializeField] private List<ScriptableElement> _allElementData;
     
 
@@ -47,7 +49,7 @@ public class Mixer : MonoBehaviour
             {
                 Card newCard = GameBoard.Instance.SpawnCard(0, 7);
                 newCard.SetElement(_allElementData[i]);
-                
+
                 GameBoard.Instance.PlaceCard(newCard, x, 0f);
                 _allElementData.RemoveAt(i);
 
@@ -78,6 +80,7 @@ public class Mixer : MonoBehaviour
         GameBoard.Instance.PlaceCard(newCard, mX, mY);
 
         PlayVFX(mX, mY);
+        _mixSFX.Play(); 
 
         return null;
     }
