@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Mixer : MonoBehaviour
@@ -28,7 +28,7 @@ public class Mixer : MonoBehaviour
         Instance = this;
         _overQueued = new List<Card>();
 
-        SpawnBasics();
+        StartCoroutine(SpawnBasics());
     }
 
     void Update()
@@ -39,7 +39,7 @@ public class Mixer : MonoBehaviour
         }
     }
 
-    private void SpawnBasics()
+    private IEnumerator SpawnBasics()
     {
         float x = -3;
         int dCount = _allElementData.Count;
@@ -56,6 +56,8 @@ public class Mixer : MonoBehaviour
                 dCount--;
                 x += 2f;
                 i--;
+
+                yield return new WaitForSeconds(.13f);
             }
         }
     }
