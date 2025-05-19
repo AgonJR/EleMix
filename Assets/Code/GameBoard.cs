@@ -132,8 +132,11 @@ public class GameBoard : MonoBehaviour
         {
             if (Mixer.Instance.MixCards(card, overlapped) != null)
             {
-                // Mix Successfull, return card to it's original Idle
-                ToggleOnGrid(card, true, card.IdleX, card.IdleY, out _, out _, out _);
+                // Mix Successfull, 
+                // Replace Overlapped Card
+                PickUpCard(x, y); PlaceCard(card, x, y);
+                Vector2 placement = FindNearestAvailable(x, y);
+                PlaceCard(overlapped, placement.x, placement.y);
             }
             else
             {

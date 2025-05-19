@@ -82,7 +82,7 @@ public class Mixer : MonoBehaviour
         PlayVFX(mX, mY);
         _mixSFX.Play(); 
 
-        return null;
+        return newCard;
     }
 
     private Card MixQueuedCards()
