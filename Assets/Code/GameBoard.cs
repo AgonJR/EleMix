@@ -14,9 +14,6 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private GameObject _cardPrefab;
     [SerializeField] private GameObject _markerPrefab;
     [SerializeField] private Transform  _markerParent;
-    [Space]
-    [SerializeField] private List<Material> _cardColors;
-    
     
     // - - -
     // Internals

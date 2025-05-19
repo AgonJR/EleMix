@@ -16,6 +16,7 @@ public class Card : MonoBehaviour
     [Space]
     [Header("References")]
     [Space]
+    [SerializeField] private Animator _meshAnimator;
     [SerializeField] private Transform _meshTransform;
     [SerializeField] private MeshRenderer _rendererBody;
     [SerializeField] private MeshRenderer _rendererFace;
@@ -82,6 +83,7 @@ public class Card : MonoBehaviour
 
         // _sFXPress?.Play();
         _held = true;
+        _meshAnimator.enabled = false;
         _meshTransform.localPosition = new Vector3(0,0,-0.5f);
     }
 
@@ -108,6 +110,7 @@ public class Card : MonoBehaviour
         _posOnRelease = transform.localPosition;
         _meshTransform.localPosition = Vector3.zero;
 
+        _meshAnimator.enabled = true;
         UpdateMaterials();
         RefreshName();
     }
@@ -178,7 +181,7 @@ public class Card : MonoBehaviour
 
     public int MixHash => _elementData.MixHash();
     public int EleHash => _elementData.GetHashCode();
-    
+
     public float IdleX => _idlePosition.x;
     public float IdleY => _idlePosition.y;
 

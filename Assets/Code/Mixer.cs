@@ -47,7 +47,7 @@ public class Mixer : MonoBehaviour
         {
             if (_allElementData[i].IsBasic())
             {
-                Card newCard = GameBoard.Instance.SpawnCard(0, 7);
+                Card newCard = GameBoard.Instance.SpawnCard(x, 7);
                 newCard.SetElement(_allElementData[i]);
 
                 GameBoard.Instance.PlaceCard(newCard, x, 0f);

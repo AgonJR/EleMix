@@ -683,6 +683,7 @@ MonoBehaviour:
   _idlePosition: {x: 0, y: 0, z: 0}
   _idleLerpSpeed: 5
   _mouseFollowSpeed: 3
+  _meshAnimator: {fileID: 1456666952506794398}
   _meshTransform: {fileID: 6065111770303250440}
   _rendererBody: {fileID: 1801402263285802961}
   _rendererFace: {fileID: 5956581795556071528}
