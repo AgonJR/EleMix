@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117f5670b7e3c4dd0a25226af7c2bb4f, type: 3}
+  m_Name: Element - 2 - Rain
+  m_EditorClassIdentifier: 
+  id: 12
+  Name: Rain
+  ColorMat: {fileID: 2100000, guid: fa1d9e552256d4e5fa7d7bc68b4e9cbb, type: 2}
+  Ingredients:
+  - {fileID: 11400000, guid: 6bed8c8adee6142209891c6a536f8101, type: 2}
+  - {fileID: 11400000, guid: a0d9e6123f64c41f298d3102ff103132, type: 2}
